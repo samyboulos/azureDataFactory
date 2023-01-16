@@ -1,0 +1,27 @@
+{
+	"name": "NorthwindDbStudentsTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "NorthwindDb",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Name",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Student"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

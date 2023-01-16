@@ -1,0 +1,9 @@
+{
+	"name": "Samy-AZ-DF",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "d63fc18e-767a-4673-85d2-520ddd6513f2",
+		"tenantId": "15009eca-110d-40b7-a08e-719bd6404d5f"
+	}
+}
