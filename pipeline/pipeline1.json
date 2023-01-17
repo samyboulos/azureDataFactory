@@ -97,11 +97,14 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[RemoveDuplicates]"
+					"storedProcedureName": "y"
 				},
 				"linkedServiceName": {
-					"referenceName": "NorthwindDb",
-					"type": "LinkedServiceReference"
+					"referenceName": "samysqlserver",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"DbName": "NorthWind"
+					}
 				}
 			}
 		],
