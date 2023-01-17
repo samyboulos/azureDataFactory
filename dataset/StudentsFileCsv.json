@@ -1,0 +1,33 @@
+{
+	"name": "StudentsFileCsv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "samystoragegen2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "Students.csv",
+				"folderPath": "Source",
+				"fileSystem": "samy"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Student",
+				"type": "String"
+			},
+			{
+				"name": "Grade",
+				"type": "String"
+			}
+		]
+	}
+}
