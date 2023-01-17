@@ -7,17 +7,13 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "Samy-AZ-DF"
 		},
-		"AzureFileShare1_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureFileShare1'"
-		},
-		"AzureTableStorage1_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureTableStorage1'"
-		},
 		"NorthwindDb_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'NorthwindDb'"
+		},
+		"samysqlserver_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'samysqlserver'"
 		},
 		"samystoragegen2_accountKey": {
 			"type": "secureString",
@@ -54,14 +50,11 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"AzureFileShare1_connectionString": {
-						"value": "[parameters('AzureFileShare1_connectionString')]"
-					},
-					"AzureTableStorage1_connectionString": {
-						"value": "[parameters('AzureTableStorage1_connectionString')]"
-					},
 					"NorthwindDb_connectionString": {
 						"value": "[parameters('NorthwindDb_connectionString')]"
+					},
+					"samysqlserver_connectionString": {
+						"value": "[parameters('samysqlserver_connectionString')]"
 					},
 					"samystoragegen2_accountKey": {
 						"value": "[parameters('samystoragegen2_accountKey')]"
