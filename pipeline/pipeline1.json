@@ -63,12 +63,6 @@
 						"referenceName": "StudentsFileCsv",
 						"type": "DatasetReference"
 					}
-				],
-				"outputs": [
-					{
-						"referenceName": "NorthwindDbStudentsTable",
-						"type": "DatasetReference"
-					}
 				]
 			},
 			{
