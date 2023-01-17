@@ -69,8 +69,14 @@
 						"referenceName": "SamySqlServerTable",
 						"type": "DatasetReference",
 						"parameters": {
-							"DBName": "Northwind",
-							"TableName": "Student"
+							"DBName": {
+								"value": "@pipeline().parameters.DBName",
+								"type": "Expression"
+							},
+							"TableName": {
+								"value": "@pipeline().parameters.TableName",
+								"type": "Expression"
+							}
 						}
 					}
 				]
@@ -106,6 +112,14 @@
 				}
 			}
 		],
+		"parameters": {
+			"DBName": {
+				"type": "string"
+			},
+			"TableName": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"lastPublishTime": "2023-01-11T16:24:56Z"
 	},
