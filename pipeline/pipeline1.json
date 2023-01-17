@@ -82,7 +82,7 @@
 				]
 			},
 			{
-				"name": "Remove Dupes",
+				"name": "Remove Dupes2",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
