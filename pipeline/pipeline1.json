@@ -95,7 +95,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "y"
+					"storedProcedureName": "[dbo].[RemoveDuplicates]"
 				},
 				"linkedServiceName": {
 					"referenceName": "samysqlserver",
