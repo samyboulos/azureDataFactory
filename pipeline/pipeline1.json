@@ -114,10 +114,12 @@
 		],
 		"parameters": {
 			"DBName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "Northwind"
 			},
 			"TableName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "Student"
 			}
 		},
 		"annotations": [],
