@@ -4,15 +4,14 @@
 	"properties": {
 		"parameters": {
 			"DbName": {
-				"type": "String",
-				"defaultValue": "NorthWind"
+				"type": "string"
 			}
 		},
 		"annotations": [],
 		"type": "SqlServer",
 		"typeProperties": {
 			"connectionString": "integrated security=False;data source=samy-sql-server.database.windows.net;initial catalog=@{linkedService().DbName};user id=samy",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDVFQzNFN0YzLUE2NUEtNDVCMi1CRjQyLTU1MjREQTg1OUE0OF85YzNjMDI3ZC0zMGQ0LTQ5ZGQtODkzOS1lZTk3NDA2NDg2YWYiDQp9"
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDVFQzNFN0YzLUE2NUEtNDVCMi1CRjQyLTU1MjREQTg1OUE0OF9hZjYyMDlhOC1jYTdlLTRiYzktYTBhYy1hMDFjZDg0YmJlYjYiDQp9"
 		}
 	}
 }
