@@ -140,7 +140,14 @@
 			{
 				"name": "Archive Student File",
 				"type": "Copy",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Remove Dupes",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -185,7 +192,13 @@
 				"inputs": [
 					{
 						"referenceName": "SourceFile",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": {
+								"value": "@pipeline().parameters.StudentFileName",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
@@ -193,7 +206,10 @@
 						"referenceName": "ArchiveFolder",
 						"type": "DatasetReference",
 						"parameters": {
-							"FileName": "1234"
+							"FileName": {
+								"value": "@concat(pipeline().parameters.StudentFileName, utcnow())",
+								"type": "Expression"
+							}
 						}
 					}
 				]
@@ -210,7 +226,7 @@
 			},
 			"StudentFileName": {
 				"type": "string",
-				"defaultValue": "Student.scv"
+				"defaultValue": "Students.csv"
 			}
 		},
 		"annotations": [],
