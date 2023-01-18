@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'samystoragegen2'"
 		},
+		"SqlServer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServer'"
+		},
 		"samystoragegen2_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://samystoragegen2.dfs.core.windows.net/"
@@ -31,7 +35,44 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Injest Student Data",
+						"name": "Remove Dupes",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Injest",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "removeDuplicates"
+						},
+						"linkedServiceName": {
+							"referenceName": "SqlServer",
+							"type": "LinkedServiceReference",
+							"parameters": {
+								"ServerName": {
+									"value": "@pipeline().globalParameters.devservername",
+									"type": "Expression"
+								},
+								"DbName": {
+									"value": "@pipeline().parameters.NorthwindDB",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "Injest",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -41,16 +82,7 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [
-							{
-								"name": "Source",
-								"value": "samy/Source/Students.csv"
-							},
-							{
-								"name": "Destination",
-								"value": "dbo.@{pipeline().parameters.TableName}"
-							}
-						],
+						"userProperties": [],
 						"typeProperties": {
 							"source": {
 								"type": "DelimitedTextSource",
@@ -69,31 +101,39 @@
 								"sqlWriterUseTableLock": false
 							},
 							"enableStaging": false,
-							"validateDataConsistency": false,
 							"translator": {
 								"type": "TabularTranslator",
 								"mappings": [
 									{
 										"source": {
 											"name": "Student",
-											"type": "String"
+											"type": "String",
+											"physicalType": "String"
 										},
 										"sink": {
 											"name": "Name",
-											"type": "String"
+											"type": "String",
+											"physicalType": "nvarchar"
 										}
 									},
 									{
 										"source": {
 											"name": "Grade",
-											"type": "String"
+											"type": "String",
+											"physicalType": "String"
 										},
 										"sink": {
 											"name": "Grade",
-											"type": "Int32"
+											"type": "Int32",
+											"physicalType": "int"
 										}
 									}
-								]
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
 							}
 						},
 						"inputs": [
@@ -105,50 +145,24 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "SamySqlServerTable",
+								"referenceName": "SqlServerTable",
 								"type": "DatasetReference",
 								"parameters": {
+									"ServerName": {
+										"value": "@pipeline().globalParameters.devservername",
+										"type": "Expression"
+									},
 									"DBName": {
-										"value": "@pipeline().parameters.DBName",
+										"value": "@pipeline().parameters.NorthwindDB",
 										"type": "Expression"
 									},
 									"TableName": {
-										"value": "@pipeline().parameters.TableName",
+										"value": "@pipeline().parameters.NW_Student_Table",
 										"type": "Expression"
 									}
 								}
 							}
 						]
-					},
-					{
-						"name": "Remove Dupes",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Injest Student Data",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[RemoveDuplicates]"
-						},
-						"linkedServiceName": {
-							"referenceName": "samysqlserver",
-							"type": "LinkedServiceReference",
-							"parameters": {
-								"DbName": "NorthWind"
-							}
-						}
 					}
 				],
 				"policy": {
@@ -156,11 +170,11 @@
 					"cancelAfter": {}
 				},
 				"parameters": {
-					"DBName": {
+					"NorthwindDB": {
 						"type": "string",
 						"defaultValue": "Northwind"
 					},
-					"TableName": {
+					"NW_Student_Table": {
 						"type": "string",
 						"defaultValue": "Student"
 					}
@@ -169,9 +183,9 @@
 				"lastPublishTime": "2023-01-11T16:24:56Z"
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer')]",
 				"[concat(variables('factoryId'), '/datasets/StudentsFileCsv')]",
-				"[concat(variables('factoryId'), '/datasets/SamySqlServerTable')]",
-				"[concat(variables('factoryId'), '/linkedServices/samysqlserver')]"
+				"[concat(variables('factoryId'), '/datasets/SqlServerTable')]"
 			]
 		},
 		{
@@ -188,6 +202,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"fileName": "Students.txt",
 						"folderPath": "Destination",
 						"fileSystem": "samy"
 					},
@@ -199,44 +214,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/samystoragegen2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SamySqlServerTable')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "samysqlserver",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"DbName": {
-							"value": "@dataset().DBName",
-							"type": "Expression"
-						}
-					}
-				},
-				"parameters": {
-					"DBName": {
-						"type": "String"
-					},
-					"TableName": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": {
-						"value": "@dataset().TableName",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/samysqlserver')]"
 			]
 		},
 		{
@@ -285,6 +262,9 @@
 				"parameters": {
 					"DbName": {
 						"type": "string"
+					},
+					"ServerName": {
+						"type": "string"
 					}
 				},
 				"annotations": [],
@@ -311,6 +291,73 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServer')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Generic Linked Service",
+				"parameters": {
+					"ServerName": {
+						"type": "string"
+					},
+					"DbName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('SqlServer_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServer",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ServerName": {
+							"value": "@dataset().ServerName",
+							"type": "Expression"
+						},
+						"DbName": {
+							"value": "@dataset().DBName",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"ServerName": {
+						"type": "string"
+					},
+					"DBName": {
+						"type": "string"
+					},
+					"TableName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer')]"
+			]
 		}
 	]
 }

@@ -11,6 +11,9 @@
 		"samystoragegen2_accountKey": {
 			"value": ""
 		},
+		"SqlServer_connectionString": {
+			"value": ""
+		},
 		"samystoragegen2_properties_typeProperties_url": {
 			"value": "https://samystoragegen2.dfs.core.windows.net/"
 		}
