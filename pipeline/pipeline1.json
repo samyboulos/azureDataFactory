@@ -129,7 +129,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"ServerName": {
-								"value": "@pipeline().globalParameters.devservername",
+								"value": "@variables('serverName')",
 								"type": "Expression"
 							},
 							"DBName": {
