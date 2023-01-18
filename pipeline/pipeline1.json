@@ -228,18 +228,6 @@
 				}
 			},
 			{
-				"name": "Check Environment",
-				"type": "IfCondition",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"expression": {
-						"value": "@pipeline().parameters.environment",
-						"type": "Expression"
-					}
-				}
-			},
-			{
 				"name": "Init PROD",
 				"type": "SetVariable",
 				"dependsOn": [],
