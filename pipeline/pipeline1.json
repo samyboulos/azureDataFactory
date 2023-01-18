@@ -115,13 +115,20 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[RemoveDuplicates]"
+					"storedProcedureName": "removeDuplicates"
 				},
 				"linkedServiceName": {
-					"referenceName": "samysqlserver",
+					"referenceName": "SqlServer",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"DbName": "NorthWind"
+						"ServerName": {
+							"value": "@pipeline().globalParameters.devservername",
+							"type": "Expression"
+						},
+						"DbName": {
+							"value": "@pipeline().parameters.NorthwindDB",
+							"type": "Expression"
+						}
 					}
 				}
 			},
