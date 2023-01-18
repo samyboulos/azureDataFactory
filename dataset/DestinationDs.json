@@ -1,0 +1,22 @@
+{
+	"name": "DestinationDs",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "samystoragegen2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "Destination",
+				"fileSystem": "samy"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
