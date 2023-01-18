@@ -213,6 +213,18 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(pipeline().parameters.environment,pipeline().parameters.development)",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
@@ -229,8 +241,15 @@
 				"defaultValue": "Students.csv"
 			},
 			"environment": {
+				"type": "string"
+			},
+			"development": {
 				"type": "string",
-				"defaultValue": "dev"
+				"defaultValue": "development"
+			},
+			"production": {
+				"type": "string",
+				"defaultValue": "production"
 			}
 		},
 		"variables": {
