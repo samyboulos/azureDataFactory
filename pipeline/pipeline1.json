@@ -84,11 +84,11 @@
 								"type": "Expression"
 							},
 							"DBName": {
-								"value": "@pipeline().parameters.DBName",
+								"value": "@pipeline().parameters.NorthwindDB",
 								"type": "Expression"
 							},
 							"TableName": {
-								"value": "@pipeline().parameters.TableName",
+								"value": "@pipeline().parameters.NW_Student_Table",
 								"type": "Expression"
 							}
 						}
@@ -221,7 +221,7 @@
 				"type": "string",
 				"defaultValue": "Northwind"
 			},
-			"NW_Students": {
+			"NW_Student_Table": {
 				"type": "string",
 				"defaultValue": "Student"
 			}
