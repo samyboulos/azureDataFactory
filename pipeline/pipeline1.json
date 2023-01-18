@@ -231,6 +231,21 @@
 						"value": "@equals(pipeline().parameters.environment,pipeline().parameters.development)",
 						"type": "Expression"
 					},
+					"ifFalseActivities": [
+						{
+							"name": "PROD Db Server",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "serverName",
+								"value": {
+									"value": "@pipeline().globalParameters.prodservername",
+									"type": "Expression"
+								}
+							}
+						}
+					],
 					"ifTrueActivities": [
 						{
 							"name": "DevDBServer",
