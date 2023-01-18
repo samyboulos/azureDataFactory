@@ -44,7 +44,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "If Condition1",
+						"activity": "Check Environment",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -222,7 +222,7 @@
 				]
 			},
 			{
-				"name": "If Condition1",
+				"name": "Check Environment",
 				"type": "IfCondition",
 				"dependsOn": [],
 				"userProperties": [],
