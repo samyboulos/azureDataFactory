@@ -1,13 +1,5 @@
 {
 	"name": "Samy-AZ-DF",
-	"properties": {
-		"globalParameters": {
-			"StudentFileName": {
-				"type": "string",
-				"value": "StudentFile.csv"
-			}
-		}
-	},
 	"location": "eastus",
 	"identity": {
 		"type": "SystemAssigned",
