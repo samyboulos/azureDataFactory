@@ -213,6 +213,31 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "Init Dev",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "serverName",
+					"value": {
+						"value": "@pipeline().globalParameters.devservername",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Check Environment",
+				"type": "IfCondition",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@pipeline().parameters.environment",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
