@@ -109,7 +109,10 @@
 						"referenceName": "SourceFile",
 						"type": "DatasetReference",
 						"parameters": {
-							"FileName": "Students.csv"
+							"FileName": {
+								"value": "@pipeline().parameters.StudentFileName",
+								"type": "Expression"
+							}
 						}
 					}
 				],
@@ -204,6 +207,10 @@
 			"NW_Student_Table": {
 				"type": "string",
 				"defaultValue": "Student"
+			},
+			"StudentFileName": {
+				"type": "string",
+				"defaultValue": "Student.scv"
 			}
 		},
 		"annotations": [],
