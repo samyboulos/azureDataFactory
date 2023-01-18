@@ -7,10 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "Samy-AZ-DF"
 		},
-		"NorthwindDb_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'NorthwindDb'"
-		},
 		"samysqlserver_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'samysqlserver'"
@@ -45,7 +41,16 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [],
+						"userProperties": [
+							{
+								"name": "Source",
+								"value": "samy/Source/Students.csv"
+							},
+							{
+								"name": "Destination",
+								"value": "dbo.@{pipeline().parameters.TableName}"
+							}
+						],
 						"typeProperties": {
 							"source": {
 								"type": "DelimitedTextSource",
@@ -59,17 +64,12 @@
 								}
 							},
 							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
+								"type": "SqlServerSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
 							},
 							"enableStaging": false,
+							"validateDataConsistency": false,
 							"translator": {
 								"type": "TabularTranslator",
 								"mappings": [
@@ -105,9 +105,18 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "StudentsFileCsv",
+								"referenceName": "SamySqlServerTable",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"DBName": {
+										"value": "@pipeline().parameters.DBName",
+										"type": "Expression"
+									},
+									"TableName": {
+										"value": "@pipeline().parameters.TableName",
+										"type": "Expression"
+									}
+								}
 							}
 						]
 					},
@@ -131,7 +140,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"storedProcedureName": "y"
+							"storedProcedureName": "[[dbo].[RemoveDuplicates]"
 						},
 						"linkedServiceName": {
 							"referenceName": "samysqlserver",
@@ -146,11 +155,87 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
+				"parameters": {
+					"DBName": {
+						"type": "string",
+						"defaultValue": "Northwind"
+					},
+					"TableName": {
+						"type": "string",
+						"defaultValue": "Student"
+					}
+				},
 				"annotations": [],
 				"lastPublishTime": "2023-01-11T16:24:56Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/StudentsFileCsv')]",
+				"[concat(variables('factoryId'), '/datasets/SamySqlServerTable')]",
+				"[concat(variables('factoryId'), '/linkedServices/samysqlserver')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DestinationDs')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "samystoragegen2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "Destination",
+						"fileSystem": "samy"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/samystoragegen2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SamySqlServerTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "samysqlserver",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"DbName": {
+							"value": "@dataset().DBName",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"DBName": {
+						"type": "String"
+					},
+					"TableName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/samysqlserver')]"
 			]
 		},
@@ -193,27 +278,13 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/NorthwindDb')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('NorthwindDb_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/samysqlserver')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"parameters": {
 					"DbName": {
-						"type": "String",
-						"defaultValue": "NorthWind"
+						"type": "string"
 					}
 				},
 				"annotations": [],

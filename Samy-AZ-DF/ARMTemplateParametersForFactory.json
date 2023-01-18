@@ -5,9 +5,6 @@
 		"factoryName": {
 			"value": "Samy-AZ-DF"
 		},
-		"NorthwindDb_connectionString": {
-			"value": ""
-		},
 		"samysqlserver_connectionString": {
 			"value": ""
 		},

@@ -7,10 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "Samy-AZ-DF"
 		},
-		"NorthwindDb_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'NorthwindDb'"
-		},
 		"samysqlserver_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'samysqlserver'"
@@ -49,9 +45,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"NorthwindDb_connectionString": {
-						"value": "[parameters('NorthwindDb_connectionString')]"
 					},
 					"samysqlserver_connectionString": {
 						"value": "[parameters('samysqlserver_connectionString')]"
