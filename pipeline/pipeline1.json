@@ -3,104 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Injest Student Data",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [
-					{
-						"name": "Source",
-						"value": "samy/Source/Students.csv"
-					},
-					{
-						"name": "Destination",
-						"value": "dbo.@{pipeline().parameters.TableName}"
-					}
-				],
-				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
-					},
-					"sink": {
-						"type": "SqlServerSink",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false
-					},
-					"enableStaging": false,
-					"validateDataConsistency": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "Student",
-									"type": "String"
-								},
-								"sink": {
-									"name": "Name",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "Grade",
-									"type": "String"
-								},
-								"sink": {
-									"name": "Grade",
-									"type": "Int32"
-								}
-							}
-						]
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "StudentsFileCsv",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "SqlServerTable",
-						"type": "DatasetReference",
-						"parameters": {
-							"ServerName": {
-								"value": "@pipeline().globalParameters.devservername",
-								"type": "Expression"
-							},
-							"DBName": {
-								"value": "@pipeline().parameters.NorthwindDB",
-								"type": "Expression"
-							},
-							"TableName": {
-								"value": "@pipeline().parameters.NW_Student_Table",
-								"type": "Expression"
-							}
-						}
-					}
-				]
-			},
-			{
 				"name": "Remove Dupes",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "Injest Student Data",
+						"activity": "Injest",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -133,41 +40,9 @@
 				}
 			},
 			{
-				"name": "DeleteStudentFile",
-				"type": "Delete",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"dataset": {
-						"referenceName": "DestinationDs",
-						"type": "DatasetReference"
-					},
-					"enableLogging": false,
-					"storeSettings": {
-						"type": "AzureBlobFSReadSettings",
-						"recursive": true,
-						"enablePartitionDiscovery": false
-					}
-				}
-			},
-			{
-				"name": "Archive Student File",
+				"name": "Injest",
 				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "Remove Dupes",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -189,19 +64,39 @@
 						}
 					},
 					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
-						}
+						"type": "SqlServerSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
 					},
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Student",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Name",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Grade",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Grade",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
@@ -217,8 +112,22 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "StudentsFileCsv",
-						"type": "DatasetReference"
+						"referenceName": "SqlServerTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"ServerName": {
+								"value": "@pipeline().globalParameters.devservername",
+								"type": "Expression"
+							},
+							"DBName": {
+								"value": "@pipeline().parameters.NorthwindDB",
+								"type": "Expression"
+							},
+							"TableName": {
+								"value": "@pipeline().parameters.NW_Student_Table",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			}
