@@ -76,18 +76,8 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "SamySqlServerTable",
-						"type": "DatasetReference",
-						"parameters": {
-							"DBName": {
-								"value": "@pipeline().parameters.DBName",
-								"type": "Expression"
-							},
-							"TableName": {
-								"value": "@pipeline().parameters.TableName",
-								"type": "Expression"
-							}
-						}
+						"referenceName": "SqlServerTable",
+						"type": "DatasetReference"
 					}
 				]
 			},
