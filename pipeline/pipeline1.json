@@ -106,8 +106,11 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "StudentsFileCsv",
-						"type": "DatasetReference"
+						"referenceName": "SourceFile",
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": "Students.csv"
+						}
 					}
 				],
 				"outputs": [
@@ -155,12 +158,40 @@
 							"type": "DelimitedTextReadSettings"
 						}
 					},
-					"enableStaging": false
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
 				},
 				"inputs": [
 					{
-						"referenceName": "StudentsFileCsv",
+						"referenceName": "SourceFile",
 						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ArchiveFolder",
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": "1234"
+						}
 					}
 				]
 			}
