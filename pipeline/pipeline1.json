@@ -227,6 +227,10 @@
 			"StudentFileName": {
 				"type": "string",
 				"defaultValue": "Students.csv"
+			},
+			"environment": {
+				"type": "string",
+				"defaultValue": "dev"
 			}
 		},
 		"variables": {
