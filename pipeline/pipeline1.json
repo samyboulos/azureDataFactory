@@ -226,8 +226,7 @@
 				"defaultValue": "Student"
 			},
 			"ServerName": {
-				"type": "string",
-				"defaultValue": "samy-sql-server.database.windows.net"
+				"type": "string"
 			}
 		},
 		"annotations": [],
