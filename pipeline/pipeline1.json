@@ -233,7 +233,7 @@
 					},
 					"ifTrueActivities": [
 						{
-							"name": "InitDev",
+							"name": "DevDBServer",
 							"type": "SetVariable",
 							"dependsOn": [],
 							"userProperties": [],
