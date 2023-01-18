@@ -5,6 +5,10 @@
 			"devservername": {
 				"type": "string",
 				"value": "samy-sql-server.database.windows.net"
+			},
+			"prodservername": {
+				"type": "string",
+				"value": "x"
 			}
 		}
 	},
