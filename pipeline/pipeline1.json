@@ -80,7 +80,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"ServerName": {
-								"value": "@pipeline().globalParameters.dev.server.name",
+								"value": "@pipeline().globalParameters.devservername",
 								"type": "Expression"
 							},
 							"DBName": {
@@ -217,14 +217,13 @@
 			}
 		],
 		"parameters": {
-			"DBName": {
-				"type": "string"
+			"NorthwindDB": {
+				"type": "string",
+				"defaultValue": "Northwind"
 			},
-			"TableName": {
-				"type": "string"
-			},
-			"ServerName": {
-				"type": "string"
+			"NW_Students": {
+				"type": "string",
+				"defaultValue": "Student"
 			}
 		},
 		"annotations": [],
