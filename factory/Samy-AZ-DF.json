@@ -1,13 +1,5 @@
 {
 	"name": "Samy-AZ-DF",
-	"properties": {
-		"globalParameters": {
-			"samysqlserver": {
-				"type": "string",
-				"value": "samy-sql-server.database.windows.net"
-			}
-		}
-	},
 	"location": "eastus",
 	"identity": {
 		"type": "SystemAssigned",
