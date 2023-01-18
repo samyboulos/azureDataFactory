@@ -218,12 +218,10 @@
 		],
 		"parameters": {
 			"DBName": {
-				"type": "string",
-				"defaultValue": "Northwind"
+				"type": "string"
 			},
 			"TableName": {
-				"type": "string",
-				"defaultValue": "Student"
+				"type": "string"
 			},
 			"ServerName": {
 				"type": "string"
