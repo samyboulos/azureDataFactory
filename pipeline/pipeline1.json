@@ -145,13 +145,7 @@
 						"referenceName": "DestinationDs",
 						"type": "DatasetReference"
 					},
-					"logStorageSettings": {
-						"linkedServiceName": {
-							"referenceName": "samystoragegen2",
-							"type": "LinkedServiceReference"
-						}
-					},
-					"enableLogging": true,
+					"enableLogging": false,
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
 						"recursive": true,
