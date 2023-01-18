@@ -238,6 +238,19 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Init PROD",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "serverName",
+					"value": {
+						"value": "@pipeline().globalParameters.prodservername",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
