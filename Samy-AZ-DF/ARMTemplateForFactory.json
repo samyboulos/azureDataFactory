@@ -79,6 +79,75 @@
 								}
 							]
 						}
+					},
+					{
+						"name": "Injest Student Data",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Check Environment",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "SourceFile",
+								"type": "DatasetReference",
+								"parameters": {
+									"FileName": "Students.csv",
+									"Directory": {
+										"value": "@concat(pipeline().parameters.environment, '\\','Source')",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SqlServerTable",
+								"type": "DatasetReference",
+								"parameters": {
+									"DB_Name": "Student"
+								}
+							}
+						]
 					}
 				],
 				"policy": {
@@ -114,7 +183,10 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SourceFile')]",
+				"[concat(variables('factoryId'), '/datasets/SqlServerTable')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ArchiveFolder')]",
@@ -174,15 +246,12 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().FileName",
-							"type": "Expression"
-						},
-						"folderPath": "Source",
-						"fileSystem": {
+						"fileName": "Students.csv",
+						"folderPath": {
 							"value": "@dataset().Directory",
 							"type": "Expression"
-						}
+						},
+						"fileSystem": "wakeschoolcontainer1"
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
@@ -214,19 +283,13 @@
 					"type": "LinkedServiceReference",
 					"parameters": {
 						"DbName": {
-							"value": "@dataset().DBName",
+							"value": "@dataset().DB_Name",
 							"type": "Expression"
 						}
 					}
 				},
 				"parameters": {
-					"ServerName": {
-						"type": "string"
-					},
-					"DBName": {
-						"type": "string"
-					},
-					"TableName": {
+					"DB_Name": {
 						"type": "string"
 					}
 				},
@@ -235,10 +298,7 @@
 				"schema": [],
 				"typeProperties": {
 					"schema": "dbo",
-					"table": {
-						"value": "@dataset().TableName",
-						"type": "Expression"
-					}
+					"table": "Student"
 				}
 			},
 			"dependsOn": [
