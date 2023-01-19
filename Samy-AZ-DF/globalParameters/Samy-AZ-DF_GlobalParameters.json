@@ -1,6 +1,1 @@
-{
-	"devservername": {
-		"type": "string",
-		"value": "samy-sql-server.database.windows.net"
-	}
-}
+{}
