@@ -1,12 +1,15 @@
 {
-	"name": "SourceFile",
+	"name": "SourceFile_o",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "samystoragegen2",
+			"referenceName": "WakeADLS",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
 			"FileName": {
+				"type": "string"
+			},
+			"Directory": {
 				"type": "string"
 			}
 		},
@@ -20,7 +23,10 @@
 					"type": "Expression"
 				},
 				"folderPath": "Source",
-				"fileSystem": "samy"
+				"fileSystem": {
+					"value": "@dataset().Directory",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
