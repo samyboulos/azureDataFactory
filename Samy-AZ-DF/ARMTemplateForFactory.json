@@ -52,21 +52,6 @@
 								"value": "@equals(pipeline().TriggerName,'PROD')",
 								"type": "Expression"
 							},
-							"ifFalseActivities": [
-								{
-									"name": "Set DEV Db Namr",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "Wake_DB_Name",
-										"value": {
-											"value": "@pipeline().parameters.wake_dev_db_name",
-											"type": "Expression"
-										}
-									}
-								}
-							],
 							"ifTrueActivities": [
 								{
 									"name": "Set PROD DbName",
@@ -74,11 +59,8 @@
 									"dependsOn": [],
 									"userProperties": [],
 									"typeProperties": {
-										"variableName": "Wake_DB_Name",
-										"value": {
-											"value": "@pipeline().parameters.wake_prod_db_name",
-											"type": "Expression"
-										}
+										"variableName": "environment",
+										"value": "PROD"
 									}
 								}
 							]
@@ -175,7 +157,7 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"DB_Name": {
-										"value": "@variables('Wake_DB_Name')",
+										"value": "@concat(pipeline().parameters.Wake_DB_Name, '_', variables('environment'))",
 										"type": "Expression"
 									}
 								}
@@ -218,18 +200,15 @@
 					"cancelAfter": {}
 				},
 				"parameters": {
-					"wake_prod_db_name": {
+					"Wake_DB_Name": {
 						"type": "string",
-						"defaultValue": "Wakeschool_PROD"
-					},
-					"wake_dev_db_name": {
-						"type": "string",
-						"defaultValue": "Wakeschool_DEV"
+						"defaultValue": "Wakeschool"
 					}
 				},
 				"variables": {
-					"Wake_DB_Name": {
-						"type": "String"
+					"environment": {
+						"type": "String",
+						"defaultValue": "DEV"
 					}
 				},
 				"annotations": []
@@ -381,7 +360,7 @@
 			"properties": {
 				"description": "Activated on new file added to DEV/Source directory.",
 				"annotations": [],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
