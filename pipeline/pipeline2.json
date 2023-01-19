@@ -57,9 +57,11 @@
 			"prod": {
 				"type": "string",
 				"defaultValue": "prod"
-			},
+			}
+		},
+		"variables": {
 			"Wake_DB_Name": {
-				"type": "string"
+				"type": "String"
 			}
 		},
 		"annotations": []
