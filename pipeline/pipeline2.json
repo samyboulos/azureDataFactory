@@ -34,9 +34,9 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "WakeSchoolDBName",
+								"variableName": "Wake_DB_Name",
 								"value": {
-									"value": "@pipeline().parameters.Wakeschool_PROD",
+									"value": "@pipeline().parameters.prod",
 									"type": "Expression"
 								}
 							}
