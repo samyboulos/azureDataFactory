@@ -233,14 +233,14 @@
 					},
 					"ifFalseActivities": [
 						{
-							"name": "PROD Db Server",
+							"name": "Set DEV Db Namr",
 							"type": "SetVariable",
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "WakeSchoolDBName",
 								"value": {
-									"value": "@pipeline().globalParameters.prodservername",
+									"value": "@pipeline().parameters.Wakeschool_DEV",
 									"type": "Expression"
 								}
 							}
