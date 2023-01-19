@@ -9,7 +9,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(pipeline().TriggerName,pipeline().parameters.PROD)",
+						"value": "@equals(pipeline().TriggerName,'PROD')",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
@@ -174,18 +174,6 @@
 			}
 		],
 		"parameters": {
-			"environment": {
-				"type": "string",
-				"defaultValue": "DEV"
-			},
-			"DEV": {
-				"type": "string",
-				"defaultValue": "DEV"
-			},
-			"PROD": {
-				"type": "string",
-				"defaultValue": "PROD"
-			},
 			"wake_prod_db_name": {
 				"type": "string",
 				"defaultValue": "Wakeschool_PROD"
