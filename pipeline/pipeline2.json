@@ -108,7 +108,10 @@
 						"referenceName": "SqlServerTable",
 						"type": "DatasetReference",
 						"parameters": {
-							"DB_Name": "Student"
+							"DB_Name": {
+								"value": "@variables('Wake_DB_Name')",
+								"type": "Expression"
+							}
 						}
 					}
 				]
