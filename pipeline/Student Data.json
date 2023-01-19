@@ -128,7 +128,10 @@
 						"referenceName": "SqlServerTable",
 						"type": "DatasetReference",
 						"parameters": {
-							"DB_Name": "Wakeschool_DEV"
+							"DB_Name": {
+								"value": "@concat('Wakeschool_',variables('environment'))",
+								"type": "Expression"
+							}
 						}
 					}
 				]
@@ -171,6 +174,26 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Remove Duplicates",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Injest Student File",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
 			}
 		],
 		"variables": {
