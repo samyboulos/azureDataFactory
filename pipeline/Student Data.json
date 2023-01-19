@@ -122,8 +122,20 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [],
+				"userProperties": []
 			}
 		],
+		"variables": {
+			"environment": {
+				"type": "String",
+				"defaultValue": "DEV"
+			}
+		},
 		"annotations": []
 	}
 }
