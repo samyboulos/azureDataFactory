@@ -3,8 +3,15 @@
 	"properties": {
 		"description": "Activated on new file added to DEV/Source directory.",
 		"annotations": [],
-		"runtimeState": "Stopped",
-		"pipelines": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Student Data",
+					"type": "PipelineReference"
+				}
+			}
+		],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
 			"blobPathBeginsWith": "/wakeschoolcontainer1/blobs/DEV/Source",
