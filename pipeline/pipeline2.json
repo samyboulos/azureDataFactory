@@ -106,7 +106,10 @@
 				"outputs": [
 					{
 						"referenceName": "SqlServerTable",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"DB_Name": "Student"
+						}
 					}
 				]
 			}
