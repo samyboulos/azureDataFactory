@@ -3,43 +3,9 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Check Environment",
-				"type": "IfCondition",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"expression": {
-						"value": "@equals(pipeline().TriggerName, 'Manual')",
-						"type": "Expression"
-					},
-					"ifFalseActivities": [
-						{
-							"name": "Set Env",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "environment",
-								"value": {
-									"value": "@pipeline().TriggerName",
-									"type": "Expression"
-								}
-							}
-						}
-					]
-				}
-			},
-			{
 				"name": "Injest Student Data",
 				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "Check Environment",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
