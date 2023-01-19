@@ -49,18 +49,21 @@
 						"userProperties": [],
 						"typeProperties": {
 							"expression": {
-								"value": "@equals(pipeline().TriggerName,'PROD')",
+								"value": "@equals(pipeline().TriggerName, 'Manual')",
 								"type": "Expression"
 							},
-							"ifTrueActivities": [
+							"ifFalseActivities": [
 								{
-									"name": "Set PROD DbName",
+									"name": "Set Env",
 									"type": "SetVariable",
 									"dependsOn": [],
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "environment",
-										"value": "PROD"
+										"value": {
+											"value": "@pipeline().TriggerName",
+											"type": "Expression"
+										}
 									}
 								}
 							]
