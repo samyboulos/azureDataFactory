@@ -36,7 +36,7 @@
 							"typeProperties": {
 								"variableName": "Wake_DB_Name",
 								"value": {
-									"value": "@pipeline().parameters.prod",
+									"value": "@pipeline().parameters.wake_prod_db_name",
 									"type": "Expression"
 								}
 							}
@@ -57,6 +57,14 @@
 			"prod": {
 				"type": "string",
 				"defaultValue": "prod"
+			},
+			"wake_prod_db_name": {
+				"type": "string",
+				"defaultValue": "Wakeschool_PROD"
+			},
+			"wake_dev_db_name": {
+				"type": "string",
+				"defaultValue": "Wakeschool_DEV"
 			}
 		},
 		"variables": {
