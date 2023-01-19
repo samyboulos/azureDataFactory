@@ -21,7 +21,7 @@
 							"typeProperties": {
 								"variableName": "Wake_DB_Name",
 								"value": {
-									"value": "@pipeline().parameters.dev",
+									"value": "@pipeline().parameters.wake_dev_db_namepipeline().parameters.dev",
 									"type": "Expression"
 								}
 							}
