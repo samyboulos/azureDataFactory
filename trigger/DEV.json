@@ -6,7 +6,7 @@
 		"pipelines": [],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
-			"blobPathBeginsWith": "/wakeschoolcontainer1/blobs/DEV",
+			"blobPathBeginsWith": "/wakeschoolcontainer1/blobs/DEV/Source",
 			"ignoreEmptyBlobs": true,
 			"scope": "/subscriptions/e0c1516c-1bcf-4ea7-83df-34fa972f77e4/resourceGroups/AZ_DF/providers/Microsoft.Storage/storageAccounts/wakeschoolstorage1",
 			"events": [
