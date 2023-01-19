@@ -9,7 +9,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(pipeline().parameters.environment,pipeline().parameters.production)",
+						"value": "@equals(pipeline().parameters.environment,pipeline().parameters.prod)",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
@@ -49,6 +49,17 @@
 			"environment": {
 				"type": "string",
 				"defaultValue": "dev"
+			},
+			"dev": {
+				"type": "string",
+				"defaultValue": "dev"
+			},
+			"prod": {
+				"type": "string",
+				"defaultValue": "prod"
+			},
+			"Wake_DB_Name": {
+				"type": "string"
 			}
 		},
 		"annotations": []
