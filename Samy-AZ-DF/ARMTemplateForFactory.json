@@ -49,7 +49,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"expression": {
-								"value": "@equals(pipeline().TriggerName,pipeline().parameters.PROD)",
+								"value": "@equals(pipeline().TriggerName,'PROD')",
 								"type": "Expression"
 							},
 							"ifFalseActivities": [
@@ -163,7 +163,7 @@
 								"parameters": {
 									"FileName": "Students.csv",
 									"Directory": {
-										"value": "@concat(pipeline().parameters.environment, '\\','Source')",
+										"value": "@concat(pipeline().TriggerName, '\\','Source')",
 										"type": "Expression"
 									}
 								}
@@ -218,18 +218,6 @@
 					"cancelAfter": {}
 				},
 				"parameters": {
-					"environment": {
-						"type": "string",
-						"defaultValue": "DEV"
-					},
-					"DEV": {
-						"type": "string",
-						"defaultValue": "DEV"
-					},
-					"PROD": {
-						"type": "string",
-						"defaultValue": "PROD"
-					},
 					"wake_prod_db_name": {
 						"type": "string",
 						"defaultValue": "Wakeschool_PROD"
