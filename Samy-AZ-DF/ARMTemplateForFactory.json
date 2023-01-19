@@ -26,6 +26,10 @@
 		"samystoragegen2_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://samystoragegen2.dfs.core.windows.net/"
+		},
+		"DEV_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/e0c1516c-1bcf-4ea7-83df-34fa972f77e4/resourceGroups/AZ_DF/providers/Microsoft.Storage/storageAccounts/wakeschoolstorage1"
 		}
 	},
 	"variables": {
@@ -378,6 +382,27 @@
 						"type": "SecureString",
 						"value": "[parameters('samystoragegen2_accountKey')]"
 					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DEV')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Activated on new file added to DEV/Source directory.",
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/wakeschoolcontainer1/blobs/DEV/Source",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('DEV_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
 				}
 			},
 			"dependsOn": []

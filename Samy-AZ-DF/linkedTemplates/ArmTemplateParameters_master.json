@@ -20,6 +20,9 @@
 		"samystoragegen2_properties_typeProperties_url": {
 			"value": "https://samystoragegen2.dfs.core.windows.net/"
 		},
+		"DEV_properties_typeProperties_scope": {
+			"value": "/subscriptions/e0c1516c-1bcf-4ea7-83df-34fa972f77e4/resourceGroups/AZ_DF/providers/Microsoft.Storage/storageAccounts/wakeschoolstorage1"
+		},
 		"containerUri": {
 			"value": ""
 		},
