@@ -140,7 +140,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(pipeline().TriggerName, 'Manual')",
+						"value": "@or(equals(pipeline().TriggerName, 'Manual'), equals(pipeline().TriggerName, 'Sandbox'))",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
