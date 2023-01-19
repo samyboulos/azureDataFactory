@@ -45,6 +45,12 @@
 				}
 			}
 		],
+		"parameters": {
+			"environment": {
+				"type": "string",
+				"defaultValue": "dev"
+			}
+		},
 		"annotations": []
 	}
 }
