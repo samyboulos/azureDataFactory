@@ -193,7 +193,17 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[RemoveDuplicates]"
+				},
+				"linkedServiceName": {
+					"referenceName": "SqlServer",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"DbName": "@concat('Wakeschool_',variables('environment'))"
+					}
+				}
 			}
 		],
 		"variables": {
