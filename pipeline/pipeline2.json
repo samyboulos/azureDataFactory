@@ -12,21 +12,6 @@
 						"value": "@not(equals(pipeline().TriggerName,'Manual'))",
 						"type": "Expression"
 					},
-					"ifFalseActivities": [
-						{
-							"name": "Set DEV Db Name",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "Wake_DB_Name",
-								"value": {
-									"value": "@pipeline().parameters.wake_dev_db_name",
-									"type": "Expression"
-								}
-							}
-						}
-					],
 					"ifTrueActivities": [
 						{
 							"name": "Set PROD DbName",
