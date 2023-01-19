@@ -11,9 +11,17 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SqlServer'"
 		},
+		"WakeADLS_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'WakeADLS'"
+		},
 		"samystoragegen2_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'samystoragegen2'"
+		},
+		"WakeADLS_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://wakeschoolstorage1.dfs.core.windows.net/"
 		},
 		"samystoragegen2_properties_typeProperties_url": {
 			"type": "string",
@@ -25,81 +33,11 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
-					{
-						"name": "Archive Student File",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "SourceFile",
-								"type": "DatasetReference",
-								"parameters": {
-									"FileName": {
-										"value": "@pipeline().parameters.StudentFileName",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ArchiveFolder",
-								"type": "DatasetReference",
-								"parameters": {
-									"FileName": {
-										"value": "@concat(pipeline().parameters.StudentFileName, utcnow())",
-										"type": "Expression"
-									}
-								}
-							}
-						]
-					},
 					{
 						"name": "Check Environment",
 						"type": "IfCondition",
@@ -107,7 +45,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"expression": {
-								"value": "@equals(pipeline().parameters.environment,pipeline().parameters.production)",
+								"value": "@equals(pipeline().parameters.environment,pipeline().parameters.PROD)",
 								"type": "Expression"
 							},
 							"ifFalseActivities": [
@@ -117,9 +55,9 @@
 									"dependsOn": [],
 									"userProperties": [],
 									"typeProperties": {
-										"variableName": "WakeSchoolDBName",
+										"variableName": "Wake_DB_Name",
 										"value": {
-											"value": "@pipeline().parameters.Wakeschool_DEV",
+											"value": "@pipeline().parameters.wake_dev_db_name",
 											"type": "Expression"
 										}
 									}
@@ -132,9 +70,9 @@
 									"dependsOn": [],
 									"userProperties": [],
 									"typeProperties": {
-										"variableName": "WakeSchoolDBName",
+										"variableName": "Wake_DB_Name",
 										"value": {
-											"value": "@pipeline().parameters.Wakeschool_PROD",
+											"value": "@pipeline().parameters.wake_prod_db_name",
 											"type": "Expression"
 										}
 									}
@@ -148,42 +86,35 @@
 					"cancelAfter": {}
 				},
 				"parameters": {
-					"StudentFileName": {
-						"type": "string",
-						"defaultValue": "Students.csv"
-					},
 					"environment": {
-						"type": "string"
-					},
-					"development": {
 						"type": "string",
-						"defaultValue": "development"
+						"defaultValue": "DEV"
 					},
-					"production": {
+					"DEV": {
 						"type": "string",
-						"defaultValue": "production"
+						"defaultValue": "DEV"
 					},
-					"Wakeschool_PROD": {
+					"PROD": {
+						"type": "string",
+						"defaultValue": "PROD"
+					},
+					"wake_prod_db_name": {
 						"type": "string",
 						"defaultValue": "Wakeschool_PROD"
 					},
-					"Wakeschool_DEV": {
+					"wake_dev_db_name": {
 						"type": "string",
 						"defaultValue": "Wakeschool_DEV"
 					}
 				},
 				"variables": {
-					"WakeSchoolDBName": {
+					"Wake_DB_Name": {
 						"type": "String"
 					}
 				},
-				"annotations": [],
-				"lastPublishTime": "2023-01-11T16:24:56Z"
+				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SourceFile')]",
-				"[concat(variables('factoryId'), '/datasets/ArchiveFolder')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ArchiveFolder')]",
@@ -227,11 +158,14 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "samystoragegen2",
+					"referenceName": "WakeADLS",
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
 					"FileName": {
+						"type": "string"
+					},
+					"Directory": {
 						"type": "string"
 					}
 				},
@@ -245,7 +179,10 @@
 							"type": "Expression"
 						},
 						"folderPath": "Source",
-						"fileSystem": "samy"
+						"fileSystem": {
+							"value": "@dataset().Directory",
+							"type": "Expression"
+						}
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
@@ -264,7 +201,7 @@
 				]
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/samystoragegen2')]"
+				"[concat(variables('factoryId'), '/linkedServices/WakeADLS')]"
 			]
 		},
 		{
@@ -276,10 +213,6 @@
 					"referenceName": "SqlServer",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"ServerName": {
-							"value": "@dataset().ServerName",
-							"type": "Expression"
-						},
 						"DbName": {
 							"value": "@dataset().DBName",
 							"type": "Expression"
@@ -319,9 +252,6 @@
 			"properties": {
 				"description": "Generic Linked Service",
 				"parameters": {
-					"ServerName": {
-						"type": "string"
-					},
 					"DbName": {
 						"type": "string"
 					}
@@ -330,6 +260,23 @@
 				"type": "SqlServer",
 				"typeProperties": {
 					"connectionString": "[parameters('SqlServer_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/WakeADLS')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('WakeADLS_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('WakeADLS_accountKey')]"
+					}
 				}
 			},
 			"dependsOn": []
