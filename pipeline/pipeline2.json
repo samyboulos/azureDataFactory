@@ -34,9 +34,9 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "Wake_DB_Name",
+								"variableName": "environment",
 								"value": {
-									"value": "@pipeline().parameters.wake_prod_db_name",
+									"value": "@pipeline().TriggerName",
 									"type": "Expression"
 								}
 							}
