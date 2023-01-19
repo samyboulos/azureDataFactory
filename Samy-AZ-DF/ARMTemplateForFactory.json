@@ -30,198 +30,16 @@
 		"DEV_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/e0c1516c-1bcf-4ea7-83df-34fa972f77e4/resourceGroups/AZ_DF/providers/Microsoft.Storage/storageAccounts/wakeschoolstorage1"
+		},
+		"PROD_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/e0c1516c-1bcf-4ea7-83df-34fa972f77e4/resourceGroups/AZ_DF/providers/Microsoft.Storage/storageAccounts/wakeschoolstorage1"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Check Environment",
-						"type": "IfCondition",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@equals(pipeline().TriggerName, 'Manual')",
-								"type": "Expression"
-							},
-							"ifFalseActivities": [
-								{
-									"name": "Set Env",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "environment",
-										"value": {
-											"value": "@pipeline().TriggerName",
-											"type": "Expression"
-										}
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "Injest Student Data",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Check Environment",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "SqlServerSink",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "Student",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Name",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "Grade",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Grade",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "SourceFile",
-								"type": "DatasetReference",
-								"parameters": {
-									"FileName": "Students.csv",
-									"Directory": {
-										"value": "@concat(pipeline().TriggerName, '\\','Source')",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "SqlServerTable",
-								"type": "DatasetReference",
-								"parameters": {
-									"DB_Name": {
-										"value": "@concat(pipeline().parameters.Wake_DB_Name, '_', variables('environment'))",
-										"type": "Expression"
-									}
-								}
-							}
-						]
-					},
-					{
-						"name": "Remove Duplicates",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Injest Student Data",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[RemoveDuplicates]"
-						},
-						"linkedServiceName": {
-							"referenceName": "SqlServer",
-							"type": "LinkedServiceReference",
-							"parameters": {
-								"DbName": "@variables('Wake_DB_Name')"
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"parameters": {
-					"Wake_DB_Name": {
-						"type": "string",
-						"defaultValue": "Wakeschool"
-					}
-				},
-				"variables": {
-					"environment": {
-						"type": "String",
-						"defaultValue": "DEV"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SourceFile')]",
-				"[concat(variables('factoryId'), '/datasets/SqlServerTable')]",
-				"[concat(variables('factoryId'), '/linkedServices/SqlServer')]"
-			]
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SourceFile')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
@@ -363,16 +181,8 @@
 			"properties": {
 				"description": "Activated on new file added to DEV/Source directory.",
 				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "pipeline2",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
+				"runtimeState": "Stopped",
+				"pipelines": [],
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
 					"blobPathBeginsWith": "/wakeschoolcontainer1/blobs/DEV/Source",
@@ -383,9 +193,28 @@
 					]
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/pipeline2')]"
-			]
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PROD')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Activated on new file added to PROD/Source directory.",
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/wakeschoolcontainer1/blobs/PROD/Source",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('PROD_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": []
 		}
 	]
 }
