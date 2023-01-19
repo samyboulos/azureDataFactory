@@ -3,7 +3,7 @@
 	"properties": {
 		"description": "Activated on new file added to DEV/Source directory.",
 		"annotations": [],
-		"runtimeState": "Stopped",
+		"runtimeState": "Started",
 		"pipelines": [],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
