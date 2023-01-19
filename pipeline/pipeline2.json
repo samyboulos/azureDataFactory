@@ -9,12 +9,12 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(pipeline().TriggerName,'PROD')",
+						"value": "@not(equals(pipeline().TriggerName,'Manual'))",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
 						{
-							"name": "Set DEV Db Namr",
+							"name": "Set DEV Db Name",
 							"type": "SetVariable",
 							"dependsOn": [],
 							"userProperties": [],
@@ -35,10 +35,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "environment",
-								"value": {
-									"value": "@pipeline().TriggerName",
-									"type": "Expression"
-								}
+								"value": "PROD"
 							}
 						}
 					]
