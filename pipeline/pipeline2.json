@@ -123,7 +123,7 @@
 						"parameters": {
 							"FileName": "Students.csv",
 							"Directory": {
-								"value": "@concat(pipeline().parameters.environment, '\\','Source')",
+								"value": "@concat(pipeline().TriggerName, '\\','Source')",
 								"type": "Expression"
 							}
 						}
