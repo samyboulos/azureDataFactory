@@ -5,10 +5,6 @@
 			"referenceName": "SqlServer",
 			"type": "LinkedServiceReference",
 			"parameters": {
-				"ServerName": {
-					"value": "@dataset().ServerName",
-					"type": "Expression"
-				},
 				"DbName": {
 					"value": "@dataset().DBName",
 					"type": "Expression"
