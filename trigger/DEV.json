@@ -4,14 +4,7 @@
 		"description": "Activated on new file added to DEV/Source directory.",
 		"annotations": [],
 		"runtimeState": "Started",
-		"pipelines": [
-			{
-				"pipelineReference": {
-					"referenceName": "pipeline2",
-					"type": "PipelineReference"
-				}
-			}
-		],
+		"pipelines": [],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
 			"blobPathBeginsWith": "/wakeschoolcontainer1/blobs/DEV/Source",
