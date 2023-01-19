@@ -133,6 +133,21 @@
 						"value": "@equals(pipeline().Pipeline, 'Manual')",
 						"type": "Expression"
 					},
+					"ifFalseActivities": [
+						{
+							"name": "Trigger Env",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "environment",
+								"value": {
+									"value": "@pipeline().TriggerName",
+									"type": "Expression"
+								}
+							}
+						}
+					],
 					"ifTrueActivities": [
 						{
 							"name": "Manual",
