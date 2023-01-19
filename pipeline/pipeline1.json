@@ -228,7 +228,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(pipeline().parameters.environment,pipeline().parameters.development)",
+						"value": "@equals(pipeline().parameters.environment,pipeline().parameters.production)",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
@@ -238,7 +238,7 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "serverName",
+								"variableName": "WakeSchoolDBName",
 								"value": {
 									"value": "@pipeline().globalParameters.prodservername",
 									"type": "Expression"
@@ -248,16 +248,13 @@
 					],
 					"ifTrueActivities": [
 						{
-							"name": "SetDEVDbName",
+							"name": "Set PROD DbName",
 							"type": "SetVariable",
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "serverName",
-								"value": {
-									"value": "@pipeline().globalParameters.devservername",
-									"type": "Expression"
-								}
+								"variableName": "WakeSchoolDBName",
+								"value": "[object Object]"
 							}
 						}
 					]
@@ -265,14 +262,6 @@
 			}
 		],
 		"parameters": {
-			"NorthwindDB": {
-				"type": "string",
-				"defaultValue": "Northwind"
-			},
-			"NW_Student_Table": {
-				"type": "string",
-				"defaultValue": "Student"
-			},
 			"StudentFileName": {
 				"type": "string",
 				"defaultValue": "Students.csv"
@@ -290,7 +279,7 @@
 			}
 		},
 		"variables": {
-			"serverName": {
+			"WakeSchoolDBName": {
 				"type": "String"
 			}
 		},
