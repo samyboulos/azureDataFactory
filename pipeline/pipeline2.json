@@ -11,7 +11,22 @@
 					"expression": {
 						"value": "@equals(pipeline().TriggerName, 'Manual')",
 						"type": "Expression"
-					}
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Set Env",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "environment",
+								"value": {
+									"value": "@pipeline().TriggerName",
+									"type": "Expression"
+								}
+							}
+						}
+					]
 				}
 			},
 			{
