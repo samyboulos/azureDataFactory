@@ -9,7 +9,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(pipeline().parameters.environment,pipeline().parameters.PROD)",
+						"value": "@equals(pipeline().TriggerName,pipeline().parameters.PROD)",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
