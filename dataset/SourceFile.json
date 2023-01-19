@@ -18,15 +18,12 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": {
-					"value": "@dataset().FileName",
-					"type": "Expression"
-				},
-				"folderPath": "Source",
-				"fileSystem": {
+				"fileName": "Students.csv",
+				"folderPath": {
 					"value": "@dataset().Directory",
 					"type": "Expression"
-				}
+				},
+				"fileSystem": "wakeschoolcontainer1"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
