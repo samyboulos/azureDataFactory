@@ -135,7 +135,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"DB_Name": {
-								"value": "@variables('Wake_DB_Name')",
+								"value": "@concat(pipeline().parameters.Wake_DB_Name, '_', variables('environment'))",
 								"type": "Expression"
 							}
 						}
@@ -174,18 +174,15 @@
 			}
 		],
 		"parameters": {
-			"wake_prod_db_name": {
+			"Wake_DB_Name": {
 				"type": "string",
-				"defaultValue": "Wakeschool_PROD"
-			},
-			"wake_dev_db_name": {
-				"type": "string",
-				"defaultValue": "Wakeschool_DEV"
+				"defaultValue": "Wakeschool"
 			}
 		},
 		"variables": {
-			"Wake_DB_Name": {
-				"type": "String"
+			"environment": {
+				"type": "String",
+				"defaultValue": "DEV"
 			}
 		},
 		"annotations": []
