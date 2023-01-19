@@ -9,6 +9,10 @@
 			"prodservername": {
 				"type": "string",
 				"value": "x"
+			},
+			"wake.school.db.servername": {
+				"type": "string",
+				"value": "wakeschool.database.windows.net"
 			}
 		}
 	},
