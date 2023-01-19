@@ -254,7 +254,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "WakeSchoolDBName",
-								"value": "[object Object]"
+								"value": {
+									"value": "@pipeline().parameters.Wakeschool_PROD",
+									"type": "Expression"
+								}
 							}
 						}
 					]
@@ -276,6 +279,14 @@
 			"production": {
 				"type": "string",
 				"defaultValue": "production"
+			},
+			"Wakeschool_PROD": {
+				"type": "string",
+				"defaultValue": "Wakeschool_PROD"
+			},
+			"Wakeschool_DEV": {
+				"type": "string",
+				"defaultValue": "Wakeschool_DEV"
 			}
 		},
 		"variables": {
