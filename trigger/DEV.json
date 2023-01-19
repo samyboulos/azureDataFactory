@@ -1,6 +1,7 @@
 {
 	"name": "DEV",
 	"properties": {
+		"description": "Activated on new file added to DEV/Source directory.",
 		"annotations": [],
 		"runtimeState": "Stopped",
 		"pipelines": [],
