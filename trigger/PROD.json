@@ -4,7 +4,14 @@
 		"description": "Activated on new file added to PROD/Source directory.",
 		"annotations": [],
 		"runtimeState": "Stopped",
-		"pipelines": [],
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Student Data",
+					"type": "PipelineReference"
+				}
+			}
+		],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
 			"blobPathBeginsWith": "/wakeschoolcontainer1/blobs/PROD/Source",
