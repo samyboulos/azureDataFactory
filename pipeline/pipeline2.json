@@ -88,15 +88,15 @@
 		"parameters": {
 			"environment": {
 				"type": "string",
-				"defaultValue": "dev"
+				"defaultValue": "DEV"
 			},
-			"dev": {
+			"DEV": {
 				"type": "string",
-				"defaultValue": "dev"
+				"defaultValue": "DEV"
 			},
-			"prod": {
+			"PROD": {
 				"type": "string",
-				"defaultValue": "prod"
+				"defaultValue": "PROD"
 			},
 			"wake_prod_db_name": {
 				"type": "string",
