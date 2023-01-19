@@ -116,7 +116,10 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"FileName": "Students.csv",
-							"Directory": "DEV/Source"
+							"Directory": {
+								"value": "@concat(variables('environment'), '/Source')",
+								"type": "Expression"
+							}
 						}
 					}
 				],
