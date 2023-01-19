@@ -124,10 +124,28 @@
 				]
 			},
 			{
-				"name": "If Condition1",
+				"name": "Set Environment",
 				"type": "IfCondition",
 				"dependsOn": [],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(pipeline().Pipeline, 'Manual')",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "Manual",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "environment",
+								"value": "DEV"
+							}
+						}
+					]
+				}
 			}
 		],
 		"variables": {
