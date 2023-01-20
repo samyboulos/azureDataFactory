@@ -309,7 +309,10 @@
 								"referenceName": "SqlServerTable",
 								"type": "DatasetReference",
 								"parameters": {
-									"DB_Name": "Wakeschool_DEV"
+									"DB_Name": {
+										"value": "@concat('Wakeschool_',variables('environment'))",
+										"type": "Expression"
+									}
 								}
 							}
 						]
@@ -318,7 +321,12 @@
 						"name": "Set Environment",
 						"type": "IfCondition",
 						"dependsOn": [],
-						"userProperties": [],
+						"userProperties": [
+							{
+								"name": "TriggerName",
+								"value": "pipeline().TriggerName"
+							}
+						],
 						"typeProperties": {
 							"expression": {
 								"value": "@or(equals(pipeline().TriggerName, 'Manual'), equals(pipeline().TriggerName, 'Sandbox'))",
@@ -352,6 +360,36 @@
 								}
 							]
 						}
+					},
+					{
+						"name": "Remove Duplicates",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Injest Student File",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[RemoveDuplicates]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SqlServer",
+							"type": "LinkedServiceReference",
+							"parameters": {
+								"DbName": "@concat('Wakeschool_',variables('environment'))"
+							}
+						}
 					}
 				],
 				"policy": {
@@ -367,7 +405,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SourceFile')]",
-				"[concat(variables('factoryId'), '/datasets/SqlServerTable')]"
+				"[concat(variables('factoryId'), '/datasets/SqlServerTable')]",
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer')]"
 			]
 		},
 		{
