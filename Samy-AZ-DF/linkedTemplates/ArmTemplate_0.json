@@ -324,7 +324,7 @@
 						"userProperties": [
 							{
 								"name": "TriggerName",
-								"value": "pipeline().TriggerName"
+								"value": "@pipeline().TriggerName"
 							}
 						],
 						"typeProperties": {
