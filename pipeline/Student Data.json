@@ -140,7 +140,12 @@
 				"name": "Set Environment",
 				"type": "IfCondition",
 				"dependsOn": [],
-				"userProperties": [],
+				"userProperties": [
+					{
+						"name": "TriggerName",
+						"value": "pipeline().TriggerName"
+					}
+				],
 				"typeProperties": {
 					"expression": {
 						"value": "@or(equals(pipeline().TriggerName, 'Manual'), equals(pipeline().TriggerName, 'Sandbox'))",
