@@ -7,7 +7,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Web1",
+						"activity": "Set Environment",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -208,30 +208,6 @@
 					"parameters": {
 						"DbName": "@concat('Wakeschool_',variables('environment'))"
 					}
-				}
-			},
-			{
-				"name": "Web1",
-				"type": "WebActivity",
-				"dependsOn": [
-					{
-						"activity": "Set Environment",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"url": "https://dummy.restapiexample.com/api/v1/employees",
-					"method": "GET"
 				}
 			}
 		],
