@@ -7,7 +7,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Set Environment",
+						"activity": "Read File Created Date",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -207,6 +207,44 @@
 					"type": "LinkedServiceReference",
 					"parameters": {
 						"DbName": "@concat('Wakeschool_',variables('environment'))"
+					}
+				}
+			},
+			{
+				"name": "Read File Created Date",
+				"type": "GetMetadata",
+				"dependsOn": [
+					{
+						"activity": "Set Environment",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "SourceFile",
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": "Students.csv",
+							"Directory": "@concat(variables('environment'), '/Source')"
+						}
+					},
+					"fieldList": [],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
 					}
 				}
 			}
