@@ -7,7 +7,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Read File Created Date",
+						"activity": "Web1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -211,8 +211,8 @@
 				}
 			},
 			{
-				"name": "Read File Created Date",
-				"type": "GetMetadata",
+				"name": "Web1",
+				"type": "WebActivity",
 				"dependsOn": [
 					{
 						"activity": "Set Environment",
@@ -230,24 +230,8 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"dataset": {
-						"referenceName": "SourceFile",
-						"type": "DatasetReference",
-						"parameters": {
-							"FileName": "Students.csv",
-							"Directory": "@concat(variables('environment'), '/Source')"
-						}
-					},
-					"fieldList": [
-						"lastModified"
-					],
-					"storeSettings": {
-						"type": "AzureBlobFSReadSettings",
-						"enablePartitionDiscovery": false
-					},
-					"formatSettings": {
-						"type": "DelimitedTextReadSettings"
-					}
+					"url": "https://dummy.restapiexample.com/api/v1/employees",
+					"method": "GET"
 				}
 			}
 		],
