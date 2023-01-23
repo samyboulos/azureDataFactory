@@ -280,9 +280,11 @@
 						"referenceName": "SourceFile",
 						"type": "DatasetReference",
 						"parameters": {
-							"FileName": "config.json"
+							"FileName": "config.json",
+							"Directory": "/"
 						}
-					}
+					},
+					"firstRowOnly": false
 				}
 			}
 		],
