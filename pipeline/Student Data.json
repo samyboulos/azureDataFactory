@@ -231,7 +231,7 @@
 							"Directory": "DEV/Source"
 						}
 					},
-					"timeout": "0.12:00:00",
+					"timeout": "0.00:00:01",
 					"sleep": 10
 				}
 			},
