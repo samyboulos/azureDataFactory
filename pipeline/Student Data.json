@@ -227,7 +227,7 @@
 						"referenceName": "SourceFile",
 						"type": "DatasetReference",
 						"parameters": {
-							"FileName": "Students.csv",
+							"FileName": "Students2.csv",
 							"Directory": "DEV/Source"
 						}
 					},
