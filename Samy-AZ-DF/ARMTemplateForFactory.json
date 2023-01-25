@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'samystoragegen2'"
 		},
+		"sql9_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'sql9'"
+		},
 		"WakeADLS_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://wakeschoolstorage1.dfs.core.windows.net/"
@@ -47,143 +51,16 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Injest Student File",
-						"type": "Copy",
+						"name": "Set Environment",
+						"type": "IfCondition",
 						"dependsOn": [
 							{
-								"activity": "Set Environment",
+								"activity": "Validation1",
 								"dependencyConditions": [
 									"Succeeded"
 								]
 							}
 						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "SqlServerSink",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "Student",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Name",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "StudentId",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Student_ID",
-											"type": "String",
-											"physicalType": "nchar"
-										}
-									},
-									{
-										"source": {
-											"name": "Address1",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Street",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "City",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "City",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "State",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "State",
-											"type": "String",
-											"physicalType": "nchar"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "SourceFile",
-								"type": "DatasetReference",
-								"parameters": {
-									"FileName": "Students.csv",
-									"Directory": {
-										"value": "@concat(variables('environment'), '/Source')",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "SqlServerTable",
-								"type": "DatasetReference",
-								"parameters": {
-									"DB_Name": {
-										"value": "@concat('Wakeschool_',variables('environment'))",
-										"type": "Expression"
-									}
-								}
-							}
-						]
-					},
-					{
-						"name": "Set Environment",
-						"type": "IfCondition",
-						"dependsOn": [],
 						"userProperties": [
 							{
 								"name": "TriggerName",
@@ -227,14 +104,7 @@
 					{
 						"name": "Remove Duplicates",
 						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Injest Student File",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
+						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -253,6 +123,76 @@
 								"DbName": "@concat('Wakeschool_',variables('environment'))"
 							}
 						}
+					},
+					{
+						"name": "Validation1",
+						"type": "Validation",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "SourceFile",
+								"type": "DatasetReference",
+								"parameters": {
+									"FileName": "Students.csv",
+									"Directory": "DEV/Source"
+								}
+							},
+							"timeout": "0.00:00:05",
+							"sleep": 10
+						}
+					},
+					{
+						"name": "Fail1",
+						"type": "Fail",
+						"dependsOn": [
+							{
+								"activity": "Validation1",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"message": "Couldn't find input file",
+							"errorCode": "1"
+						}
+					},
+					{
+						"name": "Read Config",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "SourceFile",
+								"type": "DatasetReference",
+								"parameters": {
+									"FileName": "config.json",
+									"Directory": "/"
+								}
+							},
+							"firstRowOnly": false
+						}
 					}
 				],
 				"policy": {
@@ -267,9 +207,8 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SourceFile')]",
-				"[concat(variables('factoryId'), '/datasets/SqlServerTable')]",
-				"[concat(variables('factoryId'), '/linkedServices/SqlServer')]"
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer')]",
+				"[concat(variables('factoryId'), '/datasets/SourceFile')]"
 			]
 		},
 		{
@@ -278,7 +217,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "WakeADLS",
+					"referenceName": "samystoragegen2",
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
@@ -302,7 +241,7 @@
 							"value": "@dataset().Directory",
 							"type": "Expression"
 						},
-						"fileSystem": "wakeschoolcontainer1"
+						"fileSystem": "samy"
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
@@ -321,39 +260,7 @@
 				]
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/WakeADLS')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SqlServerTable')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlServer",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"DbName": {
-							"value": "@dataset().DB_Name",
-							"type": "Expression"
-						}
-					}
-				},
-				"parameters": {
-					"DB_Name": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "Student"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SqlServer')]"
+				"[concat(variables('factoryId'), '/linkedServices/samystoragegen2')]"
 			]
 		},
 		{
@@ -405,6 +312,20 @@
 						"type": "SecureString",
 						"value": "[parameters('samystoragegen2_accountKey')]"
 					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sql9')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "sql9.freesqldatabase.com",
+				"annotations": [],
+				"type": "MySql",
+				"typeProperties": {
+					"connectionString": "[parameters('sql9_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -469,6 +390,34 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/Student Data')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MySqlTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sql9",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"Table_Name": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "MySqlTable",
+				"schema": [],
+				"typeProperties": {
+					"tableName": {
+						"value": "@dataset().Table_Name",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/sql9')]"
 			]
 		}
 	]

@@ -14,6 +14,9 @@
 		"samystoragegen2_accountKey": {
 			"value": ""
 		},
+		"sql9_connectionString": {
+			"value": ""
+		},
 		"WakeADLS_properties_typeProperties_url": {
 			"value": "https://wakeschoolstorage1.dfs.core.windows.net/"
 		},
