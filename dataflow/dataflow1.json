@@ -9,7 +9,7 @@
 						"referenceName": "SourceFile",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "Hello"
 				}
 			],
 			"sinks": [],
@@ -21,7 +21,7 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source1"
+				"     ignoreNoFilesFound: false) ~> Hello"
 			]
 		}
 	}
