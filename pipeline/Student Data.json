@@ -9,7 +9,7 @@
 					{
 						"activity": "Validation1",
 						"dependencyConditions": [
-							"Succeeded"
+							"Completed"
 						]
 					}
 				],
@@ -54,29 +54,6 @@
 				}
 			},
 			{
-				"name": "Remove Duplicates",
-				"type": "SqlServerStoredProcedure",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"storedProcedureName": "[dbo].[RemoveDuplicates]"
-				},
-				"linkedServiceName": {
-					"referenceName": "SqlServer",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"DbName": "@concat('Wakeschool_',variables('environment'))"
-					}
-				}
-			},
-			{
 				"name": "Validation1",
 				"type": "Validation",
 				"dependsOn": [],
@@ -92,23 +69,6 @@
 					},
 					"timeout": "0.00:00:05",
 					"sleep": 10
-				}
-			},
-			{
-				"name": "Fail1",
-				"type": "Fail",
-				"dependsOn": [
-					{
-						"activity": "Validation1",
-						"dependencyConditions": [
-							"Failed"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"message": "Couldn't find input file",
-					"errorCode": "1"
 				}
 			},
 			{
@@ -145,43 +105,6 @@
 					},
 					"firstRowOnly": false
 				}
-			},
-			{
-				"name": "Injest Student File",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
-					},
-					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "SourceFile",
-						"type": "DatasetReference",
-						"parameters": {
-							"FileName": "Students.csv",
-							"Directory": "DEV/Source"
-						}
-					}
-				]
 			},
 			{
 				"name": "Copy data1",
