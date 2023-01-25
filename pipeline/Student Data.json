@@ -196,8 +196,38 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"source": {
+						"type": "MySqlSource"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
 					"enableStaging": false
-				}
+				},
+				"inputs": [
+					{
+						"referenceName": "MySqlTable",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DestinationFile",
+						"type": "DatasetReference",
+						"parameters": {
+							"File_Name": "Students.csv",
+							"environment": "DEV"
+						}
+					}
+				]
 			}
 		],
 		"variables": {
