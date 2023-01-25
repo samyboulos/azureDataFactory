@@ -9,7 +9,14 @@
 						"referenceName": "SourceFile",
 						"type": "DatasetReference"
 					},
-					"name": "Hello"
+					"name": "StudentsFile"
+				},
+				{
+					"dataset": {
+						"referenceName": "DestinationFile",
+						"type": "DatasetReference"
+					},
+					"name": "Mysql"
 				}
 			],
 			"sinks": [],
@@ -21,7 +28,10 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> Hello"
+				"     ignoreNoFilesFound: false) ~> StudentsFile",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Mysql"
 			]
 		}
 	}
