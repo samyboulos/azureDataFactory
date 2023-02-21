@@ -113,52 +113,62 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "Student_Id",
-									"type": "Int32"
+									"name": "Student",
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Student_Id",
-									"type": "String"
+									"name": "Name",
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
 								"source": {
-									"name": "Name",
-									"type": "String"
+									"name": "StudentId",
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Name",
-									"type": "String"
+									"name": "Student_Id",
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
 								"source": {
-									"name": "Street",
-									"type": "String"
+									"name": "Address1",
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Street",
-									"type": "String"
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
 								"source": {
 									"name": "City",
-									"type": "String"
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "City",
-									"type": "String"
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
 								"source": {
 									"name": "State",
-									"type": "String"
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "State",
-									"type": "String"
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							}
 						],
