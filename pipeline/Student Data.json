@@ -63,7 +63,7 @@
 						"referenceName": "CsvDataFile",
 						"type": "DatasetReference",
 						"parameters": {
-							"Directory": "Source",
+							"Directory": "DEV/Source",
 							"FileName": "Students.csv"
 						}
 					},
@@ -72,34 +72,7 @@
 				}
 			},
 			{
-				"name": "Read Config",
-				"type": "Lookup",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
-					},
-					"firstRowOnly": false
-				}
-			},
-			{
-				"name": "Copy data1",
+				"name": "Ingest Student File",
 				"type": "Copy",
 				"dependsOn": [
 					{
@@ -119,7 +92,15 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "MySqlSource"
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
 					},
 					"sink": {
 						"type": "DelimitedTextSink",
@@ -186,9 +167,24 @@
 									"type": "String"
 								}
 							}
-						]
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
 					}
 				},
+				"inputs": [
+					{
+						"referenceName": "CsvDataFile",
+						"type": "DatasetReference",
+						"parameters": {
+							"Directory": "DEV/Source",
+							"FileName": "Students.csv"
+						}
+					}
+				],
 				"outputs": [
 					{
 						"referenceName": "DestinationFile",
