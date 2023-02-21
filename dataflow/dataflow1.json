@@ -5,10 +5,6 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "SourceFile",
-						"type": "DatasetReference"
-					},
 					"name": "StudentsFile"
 				},
 				{
@@ -27,8 +23,7 @@
 				"          Grade as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> StudentsFile",
+				"     validateSchema: false) ~> StudentsFile",
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> Mysql"
