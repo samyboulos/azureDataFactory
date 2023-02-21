@@ -7,7 +7,7 @@
 				"type": "IfCondition",
 				"dependsOn": [
 					{
-						"activity": "Validation1",
+						"activity": "Student File Exists",
 						"dependencyConditions": [
 							"Completed"
 						]
@@ -54,17 +54,17 @@
 				}
 			},
 			{
-				"name": "Validation1",
+				"name": "Student File Exists",
 				"type": "Validation",
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "SourceFile",
+						"referenceName": "CsvDataFile",
 						"type": "DatasetReference",
 						"parameters": {
-							"FileName": "Students.csv",
-							"Directory": "DEV/Source"
+							"Directory": "Source",
+							"FileName": "Students.csv"
 						}
 					},
 					"timeout": "0.00:00:05",
@@ -93,14 +93,6 @@
 						},
 						"formatSettings": {
 							"type": "DelimitedTextReadSettings"
-						}
-					},
-					"dataset": {
-						"referenceName": "SourceFile",
-						"type": "DatasetReference",
-						"parameters": {
-							"FileName": "config.json",
-							"Directory": "/"
 						}
 					},
 					"firstRowOnly": false
