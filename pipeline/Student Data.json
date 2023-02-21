@@ -9,7 +9,7 @@
 					{
 						"activity": "Student File Exists",
 						"dependencyConditions": [
-							"Completed"
+							"Succeeded"
 						]
 					}
 				],
@@ -103,15 +103,9 @@
 						}
 					},
 					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
-						}
+						"type": "SqlServerSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
 					},
 					"enableStaging": false,
 					"translator": {
@@ -187,12 +181,8 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "DestinationFile",
-						"type": "DatasetReference",
-						"parameters": {
-							"File_Name": "Students.csv",
-							"environment": "DEV"
-						}
+						"referenceName": "azdf_db_students",
+						"type": "DatasetReference"
 					}
 				]
 			}
