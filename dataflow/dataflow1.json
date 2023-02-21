@@ -5,28 +5,26 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"name": "StudentsFile"
-				},
-				{
 					"dataset": {
-						"referenceName": "DestinationFile",
+						"referenceName": "CsvDataFile",
 						"type": "DatasetReference"
 					},
-					"name": "Mysql"
+					"name": "StudentsFile"
 				}
 			],
 			"sinks": [],
 			"transformations": [],
 			"scriptLines": [
 				"source(output(",
-				"          Student as string,",
-				"          Grade as string",
+				"          Column_1 as string,",
+				"          Column_2 as string,",
+				"          Column_3 as string,",
+				"          Column_4 as string,",
+				"          Column_5 as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false) ~> StudentsFile",
-				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> Mysql"
+				"     ignoreNoFilesFound: false) ~> StudentsFile"
 			]
 		}
 	}
