@@ -197,12 +197,6 @@
 						]
 					}
 				},
-				"inputs": [
-					{
-						"referenceName": "MySqlTable",
-						"type": "DatasetReference"
-					}
-				],
 				"outputs": [
 					{
 						"referenceName": "DestinationFile",
