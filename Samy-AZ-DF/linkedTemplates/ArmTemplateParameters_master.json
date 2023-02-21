@@ -8,7 +8,7 @@
 		"SqlServer_connectionString": {
 			"value": ""
 		},
-		"WakeADLS_accountKey": {
+		"azdf_db_server_connectionString": {
 			"value": ""
 		},
 		"samystoragegen2_accountKey": {
@@ -16,9 +16,6 @@
 		},
 		"sql9_connectionString": {
 			"value": ""
-		},
-		"WakeADLS_properties_typeProperties_url": {
-			"value": "https://wakeschoolstorage1.dfs.core.windows.net/"
 		},
 		"samystoragegen2_properties_typeProperties_url": {
 			"value": "https://samystoragegen2.dfs.core.windows.net/"

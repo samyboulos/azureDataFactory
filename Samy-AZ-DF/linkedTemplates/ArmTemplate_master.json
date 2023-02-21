@@ -11,9 +11,9 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SqlServer'"
 		},
-		"WakeADLS_accountKey": {
+		"azdf_db_server_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'WakeADLS'"
+			"metadata": "Secure string for 'connectionString' of 'azdf_db_server'"
 		},
 		"samystoragegen2_accountKey": {
 			"type": "secureString",
@@ -22,10 +22,6 @@
 		"sql9_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'sql9'"
-		},
-		"WakeADLS_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://wakeschoolstorage1.dfs.core.windows.net/"
 		},
 		"samystoragegen2_properties_typeProperties_url": {
 			"type": "string",
@@ -69,17 +65,14 @@
 					"SqlServer_connectionString": {
 						"value": "[parameters('SqlServer_connectionString')]"
 					},
-					"WakeADLS_accountKey": {
-						"value": "[parameters('WakeADLS_accountKey')]"
+					"azdf_db_server_connectionString": {
+						"value": "[parameters('azdf_db_server_connectionString')]"
 					},
 					"samystoragegen2_accountKey": {
 						"value": "[parameters('samystoragegen2_accountKey')]"
 					},
 					"sql9_connectionString": {
 						"value": "[parameters('sql9_connectionString')]"
-					},
-					"WakeADLS_properties_typeProperties_url": {
-						"value": "[parameters('WakeADLS_properties_typeProperties_url')]"
 					},
 					"samystoragegen2_properties_typeProperties_url": {
 						"value": "[parameters('samystoragegen2_properties_typeProperties_url')]"
