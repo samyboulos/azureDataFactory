@@ -7,10 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "Samy-AZ-DF"
 		},
-		"SqlServer_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'SqlServer'"
-		},
 		"azdf_db_server_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'azdf_db_server'"
@@ -18,10 +14,6 @@
 		"samystoragegen2_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'samystoragegen2'"
-		},
-		"sql9_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'sql9'"
 		},
 		"samystoragegen2_properties_typeProperties_url": {
 			"type": "string",
@@ -62,17 +54,11 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"SqlServer_connectionString": {
-						"value": "[parameters('SqlServer_connectionString')]"
-					},
 					"azdf_db_server_connectionString": {
 						"value": "[parameters('azdf_db_server_connectionString')]"
 					},
 					"samystoragegen2_accountKey": {
 						"value": "[parameters('samystoragegen2_accountKey')]"
-					},
-					"sql9_connectionString": {
-						"value": "[parameters('sql9_connectionString')]"
 					},
 					"samystoragegen2_properties_typeProperties_url": {
 						"value": "[parameters('samystoragegen2_properties_typeProperties_url')]"

@@ -7,10 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "Samy-AZ-DF"
 		},
-		"SqlServer_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'SqlServer'"
-		},
 		"azdf_db_server_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'azdf_db_server'"
@@ -18,10 +14,6 @@
 		"samystoragegen2_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'samystoragegen2'"
-		},
-		"sql9_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'sql9'"
 		},
 		"samystoragegen2_properties_typeProperties_url": {
 			"type": "string",
@@ -114,132 +106,6 @@
 							"timeout": "0.00:00:05",
 							"sleep": 10
 						}
-					},
-					{
-						"name": "Ingest Student File",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Set Environment",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "SqlServerSink",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "Student",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Name",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "StudentId",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Student_Id",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "Address1",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Street",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "City",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "City",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "State",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "State",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "CsvDataFile",
-								"type": "DatasetReference",
-								"parameters": {
-									"Directory": "DEV/Source",
-									"FileName": "Students.csv"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "azdf_db_students",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
 					}
 				],
 				"policy": {
@@ -254,8 +120,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/CsvDataFile')]",
-				"[concat(variables('factoryId'), '/datasets/azdf_db_students')]"
+				"[concat(variables('factoryId'), '/datasets/CsvDataFile')]"
 			]
 		},
 		{
@@ -361,62 +226,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/azdf_db_students')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "azdf_db_server",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [
-					{
-						"name": "Name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Student_Id",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Street",
-						"type": "nvarchar"
-					},
-					{
-						"name": "City",
-						"type": "nvarchar"
-					},
-					{
-						"name": "State",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "Students"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/azdf_db_server')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SqlServer')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Generic Linked Service",
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"connectionString": "[parameters('SqlServer_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/azdf_db_server')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -442,20 +251,6 @@
 						"type": "SecureString",
 						"value": "[parameters('samystoragegen2_accountKey')]"
 					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/sql9')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "sql9.freesqldatabase.com",
-				"annotations": [],
-				"type": "MySql",
-				"typeProperties": {
-					"connectionString": "[parameters('sql9_connectionString')]"
 				}
 			},
 			"dependsOn": []

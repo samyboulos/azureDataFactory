@@ -5,16 +5,10 @@
 		"factoryName": {
 			"value": "Samy-AZ-DF"
 		},
-		"SqlServer_connectionString": {
-			"value": ""
-		},
 		"azdf_db_server_connectionString": {
 			"value": ""
 		},
 		"samystoragegen2_accountKey": {
-			"value": ""
-		},
-		"sql9_connectionString": {
 			"value": ""
 		},
 		"samystoragegen2_properties_typeProperties_url": {
