@@ -1,0 +1,9 @@
+{
+	"name": "adf-samy",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "63bc8cfb-105a-4367-a4e7-7ad9fe3679ad",
+		"tenantId": "15009eca-110d-40b7-a08e-719bd6404d5f"
+	}
+}
